@@ -51,5 +51,22 @@ export const getData = {
       })
       callback(result);
     })
+  },
+  catalog(callback) {
+    this.get(data => {
+      const catalogSet = new Set(data.map(item => item[PARAM.cat]));
+      const result = [...catalogSet];
+      callback(result);
+    });
+  },
+  subcatalog(value, callback) {
+    this.get(data => {
+      const subcatSet = new Set(
+        data
+        .filter(item => item[PARAM.cat] === value)
+        .map(item => item[PARAM.subcat]));
+    const result = [...subcatSet];
+    callback(result);
+    })
   }
 }

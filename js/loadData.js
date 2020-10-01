@@ -44,4 +44,7 @@ export const loadData = () => {
     getData.cart(cartList, (data) => console.log(data));
   }
 
+  getData.catalog(console.log);
+  getData.subcatalog("Мебель", console.log)
+
 };
