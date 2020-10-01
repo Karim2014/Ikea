@@ -10,7 +10,7 @@ const btnReturn = document.querySelector(".btn-return");
 const overlay = document.createElement("div");
 overlay.classList.add('overlay');
 // добавляем в дом
-document.body.insertAdjacentHTML("beforeend", overlay);
+document.body.insertAdjacentElement("beforeend", overlay);
 
 // открытие меню
 const openCatalog = () => {
