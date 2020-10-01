@@ -20,30 +20,36 @@ const cartList = [
 export const loadData = () => {
 
   if (location.search) {
+    // переводим строку поиска в нормальный вид
     const search = decodeURI(location.search);
+    // разделяем параметры
     const prop = search.split("=")[0].slice(1);
     const value = search.split("=")[1];
-    console.log("prop = ", prop);
-    console.log("value = ", value);
 
+    // если параметр s - поиск
     if (prop === 's') {
       getData.search(value, console.log);     
+      // понравившиеся
     } else if (prop === "wishlist") {
       getData.wishList(wishList, (data) => console.log(data));
     } else  {
+      // по категории
       getData.category(prop, value, data => console.log(data));
     }
 
   }
 
+  // определнный товар
   if (location.hash) {
     getData.item(location.hash.substring(1), (item) => { console.log(item) });
   }
 
+  // корзина
   if (location.pathname.includes('cart')) {
     getData.cart(cartList, (data) => console.log(data));
   }
 
+  // каталог и под каталог - ДОМАШКА
   getData.catalog(console.log);
   getData.subcatalog("Мебель", console.log)
 
