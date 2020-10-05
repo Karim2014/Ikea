@@ -1,10 +1,11 @@
+import generateSubCatalog from "./subcatalog.js";
+import { getData } from "./getData.js"
+
 export const generateMenu = () => {
+  const updateSubCatalog = generateSubCatalog();
   const btnBurger = document.querySelector(".btn-burger");
-  const btnClose = document.querySelector(".btn-close");
   const catalog = document.querySelector(".catalog");
   const subcatalog = document.querySelector(".subcatalog");
-  const catalogList = document.querySelector(".catalog-list");
-  const subcatalogHeader = document.querySelector(".subcatalog-header");
   const btnReturn = document.querySelector(".btn-return");
 
   // Делаем overlay
@@ -27,12 +28,20 @@ export const generateMenu = () => {
   }
 
   // открыть подменю
-  const openSubCatalog = event => {
+  const handleCatalog = event => {
     event.preventDefault();
-    const itemList = event.target.closest(".catalog-list__item");
+    const target = event.target;
+    const itemList = target.closest(".catalog-list__item");
     if (itemList) {
-      subcatalog.classList.add("subopen");
-      subcatalogHeader.innerHTML = itemList.innerHTML;
+      console.log(target.textContent);
+      getData.subcatalog(target.textContent, (data) => {
+        updateSubCatalog(target.textContent, data);
+        subcatalog.classList.add("subopen");
+      });
+
+    }
+    if (event.target.closest(".btn-close")) {
+      closeCatalog();
     }
   }
 
@@ -43,10 +52,14 @@ export const generateMenu = () => {
 
   // доабвлены обработчики
   btnBurger.addEventListener("click", openCatalog);
-  btnClose.addEventListener("click", closeCatalog);
   overlay.addEventListener("click", closeCatalog);
-  catalogList.addEventListener("click", openSubCatalog);
-  btnReturn.addEventListener("click", closeSubCatalog);
+  catalog.addEventListener("click", handleCatalog);
+  subcatalog.addEventListener("click", (event) => {
+    const btnReturn = event.target.closest(".btn-return");
+
+    if (btnReturn) closeSubCatalog();
+  })
+
 
   // обработка Esc для закрытия меню
   document.addEventListener("keydown", event => {
