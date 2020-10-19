@@ -1,6 +1,48 @@
 import { getData } from './getData.js';
 import userData from './userData.js';
 
+const sendData = async (url, data) => {
+  const response = await fetch(url, {
+    method: 'POST',
+    body: data,
+  });
+
+  if (!response.ok) {
+    throw new Error(`Ошибка по адресу ${url}, статус ошибки ${response.status}`);
+  }
+
+  return await response.json();
+}
+
+const sendCart = () => {
+
+  const cartForm = document.querySelector('.cart-form');
+
+  const data = {
+    name: 'Плюшевый Мшка',
+    count: 1,
+  }
+
+  cartForm.addEventListener('submit', e => {
+    e.preventDefault();
+
+    const formData = new FormData(cartForm);
+
+    const data = {};
+
+    for (const [key, value] of formData){ 
+      data[key] = value;
+    }
+
+    data.order = userData.cartList;
+
+    sendData('https://jsonplaceholder.typicode.com/posts', JSON.stringify(data))
+      .then(() => cartForm.reset())
+      .catch(console.log);
+  })
+
+}
+
 const generateCartPage = () => {
   
   // корзина
@@ -94,6 +136,8 @@ const generateCartPage = () => {
         getData.cart(userData.cartList, generateCards);
       }
     })
+
+    sendCart();
   };
 }
 
