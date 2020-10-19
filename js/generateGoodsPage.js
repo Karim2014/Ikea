@@ -1,6 +1,10 @@
 import { getData } from "./getData.js"
 
-const wishList = ["idd005", "idd007", "idd014"];
+const COUNTER = 6;
+
+const wishList = [/* "idd005", "idd007", "idd014" */];
+
+
 
 const generateGoodsPage = () => {
 
@@ -12,10 +16,8 @@ const generateGoodsPage = () => {
 
     let contentHTML = "";
 
-    if (data.length === 0) {
-      contentHTML = `
-        <div>По вашему запросу ничего не найдено</div>
-      `;      
+    if (!data.length) {
+      contentHTML = location.search !== '?wishlist' ? "<div>По вашему запросу ничего не найдено</div>" : "<div>Список желаний пуст</div>";      
     }
 
     data.forEach(item => {
@@ -25,16 +27,18 @@ const generateGoodsPage = () => {
             <article class="goods-item">
               <div class="goods-item__img">
                 <img src="${item.img[0]}"
-                  data-second-image="${item.img[2]}" alt="${item.name}">
+                  ${item.img[1] ? `data-second-image="${item.img[1]}"` : ''} alt="${item.name}" >
               </div>
-              <p class="goods-item__new">Новинка</p>
+              ${item.count > COUNTER ? `<p class="goods-item__new">Новинка</p>` : ''} 
+              ${!item.count ? `<p class="goods-item__new">Нет в наличии</p>` : ''} 
               <h3 class="goods-item__header">${item.name}</h3>
               <p class="goods-item__description">${item.description}</p>
               <p class="goods-item__price">
                 <span class="goods-item__price-value">${item.price}</span>
                 <span class="goods-item__currency"> ₽</span>
               </p>
-              <button class="btn btn-add-card" aria-label="Добравить в корзину" data-idd="${item.id}"></button>
+              ${item.count ? `<button class="btn btn-add-card" aria-label="Добравить в корзину" data-idd="${item.id}"></button>` : ''} 
+              
             </article>
           </a>
         </li>
