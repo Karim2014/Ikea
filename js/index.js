@@ -1,5 +1,6 @@
 'use-strict'
 
+import './storage.js';
 import generateHeader from "./header.js"
 import generateFooter from "./footer.js"
 import generateCatalog from "./catalog.js"
